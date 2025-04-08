@@ -23,6 +23,19 @@ data_cache = { #캐시 데이터
     "timestamp": 0
 }
 
+@app.route("/manifest")
+def get_manifest():
+    headers = {"X-API-Key": API_KEY}
+
+    response = requests.get(
+        f"{baseURL}/Destiny/Manifest",
+        headers = headers
+    )
+
+    print(response.json())
+
+    return jsonify(response.json())
+
 @app.route("/weekly")
 def get_milestone():
     current_time = time.time()
@@ -65,6 +78,8 @@ def get_user_info(username):
         headers = headers,
         json = {"displayNamePrefix": username.split("#")[0]}
     )
+
+    print(response.json())
 
     return jsonify(response.json())
 

@@ -21,7 +21,7 @@ function User(){
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        placeholder="번지 이름(태그 제외)"
+        placeholder="닉네임"
       />
       <button className="user-button" onClick={searchUser}>검색</button>
       {result?.Response?.searchResults?.length > 0 &&
@@ -34,8 +34,9 @@ function User(){
                 {user.bungieGlobalDisplayNameCode &&
                   `#${user.bungieGlobalDisplayNameCode}`}
               </p>
+              <p>ID: {destiny?.membershipId}</p>
               {destiny?.iconPath && (
-                <img
+                <img className="user-icon"
                   src={`https://www.bungie.net${destiny.iconPath}`}
                   alt="unknown"
                 />

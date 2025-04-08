@@ -33,10 +33,17 @@ input:focus {
   background-color: #333333;
 }
 
+.user-icon {
+  width: 50px !important; 
+  height: 50px !important;
+  object-fit: cover;
+  display: block;
+}
+
 .user-card {
-  border: 1px solid #444;
+  border: 1px solid #444444;
   padding: 1rem;
   margin-top: 1rem;
   border-radius: 0.5rem;
-  background-color: #222;
+  background-color: #222222;
 }

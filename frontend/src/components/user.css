@@ -1,0 +1,42 @@
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.user-container {
+  padding: 2rem;
+  color: white;
+}
+
+.user-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.user-button {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  }
+
+.user-button:hover {
+  background-color: #333333;
+}
+
+.user-card {
+  border: 1px solid #444;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  background-color: #222;
+}

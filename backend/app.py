@@ -28,7 +28,7 @@ def get_manifest():
     headers = {"X-API-Key": API_KEY}
 
     response = requests.get(
-        f"{baseURL}/Destiny/Manifest",
+        f"{baseURL}/Destiny2/Manifest",
         headers = headers
     )
 

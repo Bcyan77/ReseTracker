@@ -67,8 +67,7 @@ def get_milestone():
             "vendor": data_cache["vendor"],
             "milestone_def": data_cache["milestone_def"],
             "activity_def": data_cache["activity_def"],
-            "modifier_def": data_cache["modifier_def"],
-            "powerfulMilestones": data_cache["powerful_milestone_hashes"]
+            "modifier_def": data_cache["modifier_def"]
         })
 
     headers = {"X-API-Key": API_KEY}
@@ -81,8 +80,6 @@ def get_milestone():
     activity_def = requests.get("https://www.bungie.net" + path["DestinyActivityDefinition"]).json()
     modifier_def = requests.get("https://www.bungie.net" + path["DestinyActivityModifierDefinition"]).json()
 
-    powerful_hashes = [h for h, v in milestone_def.items() if has_powerful_reward(v)]
-
     # 캐시 저장
     data_cache.update({
         "milestone": milestone,
@@ -90,7 +87,6 @@ def get_milestone():
         "milestone_def": milestone_def,
         "activity_def": activity_def,
         "modifier_def": modifier_def,
-        "powerful_milestone_hashes": powerful_hashes,
         "timestamp": current_time
     })
 
@@ -99,9 +95,33 @@ def get_milestone():
         "vendor": vendor,
         "milestone_def": milestone_def,
         "activity_def": activity_def,
-        "modifier_def": modifier_def,
-        "powerfulMilestones": powerful_hashes
+        "modifier_def": modifier_def
     })
+
+# /item_icon 엔드포인트를 통해 아이콘 확인하는 코드
+@app.route("/item_icon/<int:item_hash>")
+def get_item_icon_dynamic(item_hash):
+    headers = {"X-API-Key": API_KEY}
+    
+    # 매니페스트 경로 받아오기
+    manifest_res = requests.get(f"{baseURL}/Destiny2/Manifest", headers=headers).json()
+    item_def_path = manifest_res["Response"]["jsonWorldComponentContentPaths"]["ko"]["DestinyInventoryItemDefinition"]
+
+    # 아이템 정의 JSON 가져오기
+    item_def_res = requests.get("https://www.bungie.net" + item_def_path, headers=headers)
+    item_definitions = item_def_res.json()
+
+    # 아이템 해시로 아이콘 경로 얻기
+    item_def = item_definitions.get(str(item_hash))
+    if not item_def:
+        return jsonify({"error": "아이템을 찾을 수 없습니다."}), 404
+
+    icon = item_def["displayProperties"].get("icon")
+    if icon:
+        icon_url = f"https://www.bungie.net{icon}"
+        return jsonify({"itemHash": item_hash, "icon": icon_url})
+    else:
+        return jsonify({"itemHash": item_hash, "error": "아이콘 없음"}), 404
 
 
 @app.route("/user/<username>") #프로필
@@ -117,6 +137,21 @@ def get_user_info(username):
     print(response.json())
 
     return jsonify(response.json())
+
+import json
+
+@app.route("/save_milestone_json")
+def save_milestone_json():
+    headers = {"X-API-Key": API_KEY}
+    response = requests.get(f"{baseURL}/Destiny2/Milestones/", headers=headers)
+    data = response.json()
+
+    # milestone.json로 저장
+    with open("milestone.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    return jsonify({"message": "milestone.json 저장 완료", "milestoneCount": len(data.get("Response", {}))})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

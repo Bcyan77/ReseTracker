@@ -1,22 +1,23 @@
-input:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.user-container {
+.user-wrapper {
   padding: 2rem;
   color: white;
 }
 
-.user-input {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+.user-search {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
+.user-input {
   padding: 0.5rem;
   font-size: 1.5rem;
   background-color: #1a1a1a;
   color: white;
+  border: 1px solid #333;
+  border-radius: 5px;
 }
 
 .user-button {
@@ -24,26 +25,71 @@ input:focus {
   font-size: 1.5rem;
   background-color: #1a1a1a;
   color: white;
-  border: none;
+  border: 1px solid #333;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  }
+}
 
 .user-button:hover {
   background-color: #333333;
 }
 
-.user-icon {
-  width: 50px !important; 
-  height: 50px !important;
-  object-fit: cover;
-  display: block;
+.user-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
 .user-card {
   border: 1px solid #444444;
   padding: 1rem;
-  margin-top: 1rem;
   border-radius: 0.5rem;
   background-color: #222222;
+  width: 360px;
+  box-sizing: border-box;
+}
+
+.user-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.user-links {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.user-links a {
+  color: #00bfff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.user-links a:hover {
+  color: #66e0ff;
+}
+
+@media screen and (max-width: 700px) {
+  .user-card {
+    width: 100%;
+  }
+
+  .user-input,
+  .user-button {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  .user-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

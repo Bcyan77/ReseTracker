@@ -17,9 +17,12 @@ CORS(app)
 
 baseURL = "https://www.bungie.net/Platform"
 
-data_cache = { #캐시 데이터
+data_cache = {
     "milestone": None,
     "vendor": None,
+    "milestone_def": None,
+    "activity_def": None,
+    "modifier_def": None,
     "timestamp": 0
 }
 
@@ -36,38 +39,70 @@ def get_manifest():
 
     return jsonify(response.json())
 
+# 강력한/최고급 장비 itemHash
+POWERFUL_ITEM_HASHES = {277576667, 2390540451}
+
+def has_powerful_reward(milestone):
+    for reward in milestone.get("rewards", {}).values():
+        for entry in reward.get("rewardEntries", {}).values():
+            for item in entry.get("items", []):
+                if item["itemHash"] in POWERFUL_ITEM_HASHES:
+                    return True
+    return False
+
 @app.route("/weekly")
 def get_milestone():
     current_time = time.time()
 
-    if data_cache["milestone"] and data_cache["vendor"] and (current_time - data_cache["timestamp"] < 3600): #캐시 데이터 반환
+    if (
+        data_cache["milestone"] and
+        data_cache["vendor"] and
+        data_cache["milestone_def"] and
+        data_cache["activity_def"] and
+        data_cache["modifier_def"] and
+        (current_time - data_cache["timestamp"] < 3600)
+    ):
         return jsonify({
             "milestone": data_cache["milestone"],
-            "vendor": data_cache["vendor"]
+            "vendor": data_cache["vendor"],
+            "milestone_def": data_cache["milestone_def"],
+            "activity_def": data_cache["activity_def"],
+            "modifier_def": data_cache["modifier_def"],
+            "powerfulMilestones": data_cache["powerful_milestone_hashes"]
         })
-    
+
     headers = {"X-API-Key": API_KEY}
+    milestone = requests.get(f"{baseURL}/Destiny2/Milestones/", headers=headers).json()
+    vendor = requests.get(f"{baseURL}/Destiny2/Vendors/", headers=headers).json()
+    manifest = requests.get(f"{baseURL}/Destiny2/Manifest/", headers=headers).json()
 
-    milestone_response = requests.get( #마일스톤
-        f"{baseURL}/Destiny2/Milestones/",
-        headers = headers) 
-    data_cache["milestone"] = milestone_response.json()
+    path = manifest["Response"]["jsonWorldComponentContentPaths"]["ko"]
+    milestone_def = requests.get("https://www.bungie.net" + path["DestinyMilestoneDefinition"]).json()
+    activity_def = requests.get("https://www.bungie.net" + path["DestinyActivityDefinition"]).json()
+    modifier_def = requests.get("https://www.bungie.net" + path["DestinyActivityModifierDefinition"]).json()
 
-    vendor_response = requests.get( #상인
-        f"{baseURL}/Destiny2/Vendors/",
-        headers = headers,
-        params = {})
-    data_cache["vendor"] = vendor_response.json()
+    powerful_hashes = [h for h, v in milestone_def.items() if has_powerful_reward(v)]
 
-    data_cache["timestamp"] = current_time
-
-    print(milestone_response.text)
-    print(vendor_response.text)
+    # 캐시 저장
+    data_cache.update({
+        "milestone": milestone,
+        "vendor": vendor,
+        "milestone_def": milestone_def,
+        "activity_def": activity_def,
+        "modifier_def": modifier_def,
+        "powerful_milestone_hashes": powerful_hashes,
+        "timestamp": current_time
+    })
 
     return jsonify({
-        "milestone": data_cache["milestone"],
-        "vendor": data_cache["vendor"]
+        "milestone": milestone,
+        "vendor": vendor,
+        "milestone_def": milestone_def,
+        "activity_def": activity_def,
+        "modifier_def": modifier_def,
+        "powerfulMilestones": powerful_hashes
     })
+
 
 @app.route("/user/<username>") #프로필
 def get_user_info(username):

@@ -1,0 +1,29 @@
+.milestone {
+    background-color: #1f1f2e;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    color: white;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .milestone-title {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .milestone-activity {
+    font-weight: bold;
+    margin-top: 4px;
+  }
+  
+  .milestone-modifiers {
+    margin-top: 8px;
+  }
+  
+  .milestone-period {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  

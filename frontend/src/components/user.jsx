@@ -31,8 +31,7 @@ function User(){
             <div key={ind} className="user-card">
               <p>
                 {user.bungieGlobalDisplayName}
-                {user.bungieGlobalDisplayNameCode &&
-                  `#${user.bungieGlobalDisplayNameCode}`}
+                {user.bungieGlobalDisplayNameCode && `#${user.bungieGlobalDisplayNameCode}`}
               </p>
               <p>ID: {destiny?.membershipId}</p>
               {destiny?.iconPath && (

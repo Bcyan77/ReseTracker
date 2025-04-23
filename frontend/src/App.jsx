@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Milestone from "./components/milestone"
+import Raid from "./components/raid"
 import User from "./components/user"
 import Vendor from "./components/vendor"
 
@@ -16,13 +17,18 @@ function App(){
         <button
           className={`tab-button ${tab === "milestone" ? "active" : ""}`}
           onClick={() => setTab("milestone")}>
-          주간
+          플레이리스트
         </button>
         <button
+          className={`tab-button ${tab === "raid" ? "active" : ""}`}
+          onClick={() => setTab("raid")}>
+          레이드/던전
+        </button>
+        {/*<button
           className={`tab-button ${tab === "vendor" ? "active" : ""}`}
           onClick={() => setTab("vendor")}>
           상인
-        </button>
+        </button>*/}
         <button
           className={`tab-button ${tab === "user" ? "active" : ""}`}
           onClick={() => setTab("user")}>
@@ -31,6 +37,7 @@ function App(){
       </div>
 
         {tab === "milestone" && <Milestone />}
+        {tab === "raid" && <Raid />}
         {tab === "vendor" && <Vendor />}
         {tab === "user" && <User />}
     </div>

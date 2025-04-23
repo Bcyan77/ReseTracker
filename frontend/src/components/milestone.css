@@ -3,6 +3,7 @@
     border: 1px solid #444;
     border-radius: 8px;
     padding: 1rem;
+    width: 220px;
     margin-bottom: 1rem;
     color: white;
   }
@@ -14,8 +15,10 @@
   
   .milestone-activity,
   .milestone-rewards,
-  .milestone-modifiers {
+  .milestone-modifiers ul{
     margin-bottom: 0.5rem;
+    list-style: none;
+    padding-left: 0;
   }
   
   .milestone-header {
@@ -25,11 +28,31 @@
     cursor: pointer;
     margin-top: 1.5rem;
     border-radius: 6px;
+    margin-bottom: 10px;
   }
   
   .milestone-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+  }
+  
+  .modifier-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .modifier-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  
+  .modifier-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    border-radius: 4px;
   }
   

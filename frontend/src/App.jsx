@@ -6,7 +6,7 @@ import Vendor from "./components/vendor"
 import "./App.css";
 
 function App(){
-  const [tab, setTab] = useState("user");
+  const [tab, setTab] = useState("milestone");
 
   return(
     <div>

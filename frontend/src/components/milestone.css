@@ -1,38 +1,30 @@
 .milestone {
     background-color: #1e1e1e;
     border: 1px solid #444;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
-    width: 100%;
-    max-width: 500px;
-    box-sizing: border-box;
+    color: white;
   }
   
   .milestone-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    color: #00bfff;
-  }
-  
-  .milestone-activity {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
   }
   
+  .milestone-activity,
+  .milestone-rewards,
   .milestone-modifiers {
     margin-bottom: 0.5rem;
   }
   
-  .milestone-modifiers p {
-    margin: 0;
+  .milestone-header {
+    color: white;
     font-weight: bold;
-  }
-  
-  .milestone-modifiers ul {
-    margin: 0.3rem 0 0 1rem;
-    padding: 0;
-    list-style-type: disc;
+    padding: 0.8rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    border-radius: 6px;
   }
   
   .milestone-container {
@@ -41,30 +33,3 @@
     gap: 1rem;
   }
   
-  .milestone-rewards {
-    margin-bottom: 0.5rem;
-  }
-  
-  .milestone-rewards p {
-    margin: 0;
-    font-weight: bold;
-  }
-  
-  .milestone-rewards ul {
-    margin: 0.3rem 0 0 1rem;
-    padding: 0;
-    list-style-type: disc;
-  }
-
-  .reward-icons {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  
-  .reward-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
-    background-color: #111;
-  }

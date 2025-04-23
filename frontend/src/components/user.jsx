@@ -51,7 +51,7 @@ function User() {
               <div key={ind} className="user-card">
                 <p>
                   {user.bungieGlobalDisplayName}
-                  {user.bungieGlobalDisplayNameCode && `#${user.bungieGlobalDisplayNameCode}`}
+                  {user.bungieGlobalDisplayNameCode && `#${user.bungieGlobalDisplayNameCode.toString().padStart(4, '0')}`}
                 </p>
                 {destiny?.iconPath && (
                   <img

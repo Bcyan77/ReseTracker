@@ -111,4 +111,4 @@ def save_milestone_json():
     return jsonify({"message": "milestone.json 저장 완료", "milestoneCount": len(data.get("Response", {}))})
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5000)

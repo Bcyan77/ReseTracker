@@ -67,7 +67,7 @@ function Raid() {
   const [expanded, setExpanded] = useState({ raid: true, dungeon: true });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/weekly")
+    axios.get(`${process.env.REACT_APP_API_URL}/weekly`)
       .then((res) => {
         setMilestone(res.data.milestone);
         setDefs({

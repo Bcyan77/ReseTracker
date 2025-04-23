@@ -17,7 +17,7 @@ function User() {
 
   const searchUser = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/user/${username}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/${username}`);
       setResult(res.data);
     } catch (err) {
       console.log(err);

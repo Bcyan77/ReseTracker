@@ -6,7 +6,7 @@ function Vendor(){
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/manifest")
+    axios.get(`${process.env.REACT_APP_API_URL}/manifest`)
       .then((res) => {
         setVendor(res.data);
       })

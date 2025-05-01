@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./milestone.css";
 
@@ -30,6 +30,32 @@ function classifyActivity(name) {
 }
 
 function MilestoneCard({ activityName, modifiers = [], rewards = [] }) {
+  const tooltipRefs = useRef([]);
+
+  useEffect(() => {
+    tooltipRefs.current.forEach((tooltip) => {
+      if (!tooltip) return;
+      const rect = tooltip.getBoundingClientRect();
+      const padding = 8;
+
+      if (rect.left < padding) {
+        tooltip.style.left = "0";
+        tooltip.style.right = "auto";
+        tooltip.style.transform = "none";
+      }
+      else if (rect.right > window.innerWidth - padding) {
+        tooltip.style.left = "auto";
+        tooltip.style.right = "0";
+        tooltip.style.transform = "none";
+      }
+      else {
+        tooltip.style.left = "50%";
+        tooltip.style.right = "auto";
+        tooltip.style.transform = "translateX(-50%)";
+      }
+    });
+  }, [modifiers]);
+
   return (
     <div className="milestone">
       <h3 className="milestone-title">{activityName}</h3>
@@ -46,7 +72,10 @@ function MilestoneCard({ activityName, modifiers = [], rewards = [] }) {
                       alt={mod.name}
                       className="modifier-icon"
                     />
-                    <div className="tooltip">
+                    <div
+                      className="tooltip"
+                      ref={el => tooltipRefs.current[i] = el}
+                    >
                       <strong>{mod.name}</strong><br />
                       {(mod.description || "")
                         .replace(/\{var:\d+\}%?/g, "")
@@ -65,14 +94,6 @@ function MilestoneCard({ activityName, modifiers = [], rewards = [] }) {
                 )}
               </li>
             ))}
-          </ul>
-        </div>
-      )}
-      {rewards.length > 0 && (
-        <div className="milestone-rewards">
-          <p>보상:</p>
-          <ul>
-            {rewards.map((reward, i) => <li key={i}>{reward}</li>)}
           </ul>
         </div>
       )}

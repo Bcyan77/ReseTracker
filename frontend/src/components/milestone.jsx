@@ -52,7 +52,14 @@ function MilestoneCard({ activityName, modifiers = [], rewards = [] }) {
                         .replace(/\{var:\d+\}%?/g, "")
                         .replace(/\s+/g, " ")
                         .replace(/ +가/g, "가")
-                        .trim()}
+                        .replace(/(\.)\s+/g, "$1<br />")
+                        .trim()
+                        .split("<br />")
+                        .map((line, i) => (
+                          <React.Fragment key={i}>
+                            {line}<br />
+                          </React.Fragment>
+                        ))}
                     </div>
                   </>
                 )}

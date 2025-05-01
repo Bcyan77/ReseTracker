@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./milestone.css";
 
@@ -25,6 +25,29 @@ function classifyActivity(name) {
 }
 
 function RaidCard({ activityName, modifiers = [], rewards = [] }) {
+  const tooltipRefs = useRef([]);
+
+  const handleTooltipPosition = (i) => {
+    const tooltip = tooltipRefs.current[i];
+    if (!tooltip) return;
+    const rect = tooltip.getBoundingClientRect();
+    const padding = 8;
+
+    if (rect.left < padding) {
+      tooltip.style.left = "0";
+      tooltip.style.right = "auto";
+      tooltip.style.transform = "none";
+    } else if (rect.right > window.innerWidth - padding) {
+      tooltip.style.left = "auto";
+      tooltip.style.right = "0";
+      tooltip.style.transform = "none";
+    } else {
+      tooltip.style.left = "50%";
+      tooltip.style.right = "auto";
+      tooltip.style.transform = "translateX(-50%)";
+    }
+  };
+
   return (
     <div className="milestone">
       <h3 className="milestone-title">{activityName}</h3>
@@ -34,7 +57,11 @@ function RaidCard({ activityName, modifiers = [], rewards = [] }) {
           <p>모디파이어</p>
           <ul className="modifier-list">
             {modifiers.map((mod, i) => (
-              <li key={i} className="modifier-item tooltip-wrapper">
+              <li
+                key={i}
+                className="modifier-item tooltip-wrapper"
+                onMouseEnter={() => handleTooltipPosition(i)}
+              >
                 {mod.icon && (
                   <>
                     <img
@@ -42,7 +69,21 @@ function RaidCard({ activityName, modifiers = [], rewards = [] }) {
                       alt={mod.name}
                       className="modifier-icon"
                     />
-                    <div className="tooltip">{mod.name}</div>
+                    <div className="tooltip" ref={el => tooltipRefs.current[i] = el}>
+                      <strong>{mod.name}</strong><br />
+                      {(mod.description || "")
+                        .replace(/\{var:\d+\}%?/g, "")
+                        .replace(/\s+/g, " ")
+                        .replace(/ +가/g, "가")
+                        .replace(/(\.)\s+/g, "$1<br />")
+                        .trim()
+                        .split("<br />")
+                        .map((line, j) => (
+                          <React.Fragment key={j}>
+                            {line}<br />
+                          </React.Fragment>
+                        ))}
+                    </div>
                   </>
                 )}
               </li>
@@ -110,7 +151,11 @@ function Raid() {
         .map(h => {
           const mod = defs.modifier[h]?.displayProperties;
           if (!mod?.name || mod.name === "???") return null;
-          return { name: mod.name, icon: mod.icon || null };
+          return {
+            name: mod.name,
+            icon: mod.icon || null,
+            description: mod.description || ""
+          };
         })
         .filter(Boolean);
 

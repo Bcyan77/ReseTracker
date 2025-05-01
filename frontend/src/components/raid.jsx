@@ -34,15 +34,17 @@ function RaidCard({ activityName, modifiers = [], rewards = [] }) {
           <p>모디파이어</p>
           <ul className="modifier-list">
             {modifiers.map((mod, i) => (
-              <li key={i} className="modifier-item">
+              <li key={i} className="modifier-item tooltip-wrapper">
                 {mod.icon && (
-                  <img
-                    src={`https://www.bungie.net${mod.icon}`}
-                    alt=""
-                    className="modifier-icon"
-                  />
+                  <>
+                    <img
+                      src={`https://www.bungie.net${mod.icon}`}
+                      alt={mod.name}
+                      className="modifier-icon"
+                    />
+                    <div className="tooltip">{mod.name}</div>
+                  </>
                 )}
-                {mod.name}
               </li>
             ))}
           </ul>

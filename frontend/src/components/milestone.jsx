@@ -38,15 +38,24 @@ function MilestoneCard({ activityName, modifiers = [], rewards = [] }) {
           <p>모디파이어</p>
           <ul className="modifier-list">
             {modifiers.map((mod, i) => (
-              <li key={i} className="modifier-item">
+              <li key={i} className="modifier-item tooltip-wrapper">
                 {mod.icon && (
-                  <img
-                    src={`https://www.bungie.net${mod.icon}`}
-                    alt={mod.name}
-                    className="modifier-icon"
-                  />
+                  <>
+                    <img
+                      src={`https://www.bungie.net${mod.icon}`}
+                      alt={mod.name}
+                      className="modifier-icon"
+                    />
+                    <div className="tooltip">
+                      <strong>{mod.name}</strong><br />
+                      {(mod.description || "")
+                        .replace(/\{var:\d+\}%?/g, "")
+                        .replace(/\s+/g, " ")
+                        .replace(/ +가/g, "가")
+                        .trim()}
+                    </div>
+                  </>
                 )}
-                <span>{mod.name}</span>
               </li>
             ))}
           </ul>
@@ -119,12 +128,12 @@ function Milestone() {
 
       const modifiers = (act.modifierHashes || [])
         .map(h => {
-          const modDef = defs.modifier[h];
-          const name = modDef?.displayProperties?.name;
-          if (!name || name === "???") return null;
+          const mod = defs.modifier[h]?.displayProperties;
+          if (!mod?.name || mod.name === "???") return null;
           return {
-            name,
-            icon: modDef?.displayProperties?.icon || null,
+            name: mod.name,
+            icon: mod.icon || null,
+            description: mod.description || ""
           };
         })
         .filter(Boolean);
